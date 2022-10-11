@@ -10,5 +10,7 @@ public final class App {
         System.out.println("Hello World!");
         System.out.println("This is a test!");
         System.out.println("Another test is required!");
+        System.out.println("Hello!");
+        System.out.println("Hello!");
     }
 }
