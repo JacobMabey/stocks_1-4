@@ -6,7 +6,8 @@ public class Account {
     private int accountNum;
     private String firstname, lastname;
     private String ssn, email, phoneNum;
-    private String cash;
+    private double cash;
+    private int stockHoldings;
 
     private ArrayList<Transaction> transactions;
 
@@ -17,11 +18,12 @@ public class Account {
         this.ssn = ssn;
         this.email = email;
         this.phoneNum = phoneNum;
-        this.cash = "$0.00";
+        this.cash = 0.00;
+        this.stockHoldings = 0;
 
         transactions = new ArrayList<Transaction>();
     }
-    public Account(int accountNum, String firstname, String lastname, String ssn, String email, String phoneNum, String cash) {
+    public Account(int accountNum, String firstname, String lastname, String ssn, String email, String phoneNum, double cash) {
         this.accountNum = accountNum;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -29,6 +31,7 @@ public class Account {
         this.email = email;
         this.phoneNum = phoneNum;
         this.cash = cash;
+        this.stockHoldings = 0;
 
         transactions = new ArrayList<Transaction>();
     }
@@ -40,12 +43,23 @@ public class Account {
     public String GetSSN() { return ssn; }
     public String GetEmailAddress() { return email; }
     public String GetPhoneNumber() { return phoneNum; }
-    public String GetBalance() { return cash; }
+    public double GetBalance() { return cash; }
 
     public ArrayList<Transaction> GetTransactions() { return transactions; }
 
     public void AddTransaction(Transaction transaction) {
         transactions.add(transaction);
+        switch(transaction.GetType()) {
+            case "Buy":
+                cash -= transaction.GetTotal();
+                stockHoldings += transaction.GetAmountOfShares();
+                break;
+            case "Sell":
+                cash += transaction.GetTotal();
+                stockHoldings -= transaction.GetAmountOfShares();
+                break;
+        }
+        cash = (double)((int)(cash * 100.0 + 0.5) / 100.0);
     }
 
     @Override
@@ -56,7 +70,7 @@ public class Account {
         for (Transaction t : transactions) {
             result += t + "\n";
         }
-        result += cash;
+        result += "Balance: $" + cash + "\tTotal Shares: " + stockHoldings;
 
         return result;
     }

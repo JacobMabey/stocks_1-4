@@ -21,9 +21,17 @@ public final class StockMain {
         InitializeList();
 
         System.out.println(GetAccount(1));
+        System.out.println(GetAccount(45));
+        System.out.println(GetAccount(256));
     }
 
 
+
+    /**
+     * Gets an account, its information, and its list of transactions from a JSON file
+     * @param accountNum
+     * @return
+     */
     public static Account GetAccount(int accountNum) {
         if (accountNum < 1 || accountNum > jsonArray.size()) {
             System.out.println("account number does not exist");
@@ -36,7 +44,8 @@ public final class StockMain {
         String ssn = GetJSONValue(accountNum, "ssn");
         String email = GetJSONValue(accountNum, "email");
         String phoneNum = GetJSONValue(accountNum, "phone");
-        String cash = GetJSONValue(accountNum, "beginning_balance");
+        double cash = Double.parseDouble(GetJSONValue(accountNum, "beginning_balance").substring(1));
+        cash = (double)((int)(cash * 100.0 + 0.5) / 100.0);
 
         //Define the account
         Account account = new Account(account_number, first_name, last_name, ssn, email, phoneNum, cash);
@@ -56,6 +65,12 @@ public final class StockMain {
     }
 
 
+    /**
+     * Gets a specific value from a key in a JSON file
+     * @param accountNum
+     * @param key
+     * @return
+     */
     private static String GetJSONValue(int accountNum, String key) {
         String value = "";
         int arrayLength = jsonArray.size();
@@ -66,6 +81,7 @@ public final class StockMain {
         value = (String)((JSONObject)jsonArray.get(accountNum - 1)).get(key).toString();
         return value;
     }
+
 
     private static void InitializeList() {
         try {
