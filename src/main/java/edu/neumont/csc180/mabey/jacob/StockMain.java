@@ -3,6 +3,9 @@ package edu.neumont.csc180.mabey.jacob;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
@@ -20,9 +23,32 @@ public final class StockMain {
     public static void main(String[] args) {
         InitializeList();
 
-        System.out.println(GetAccount(1));
-        System.out.println(GetAccount(196));
-        System.out.println(GetAccount(255));
+        Scanner input = new Scanner(System.in);
+        String inputText = "";
+        Account account = null;
+        int accountNum;
+        while (true) {
+            account = null;
+            while (account == null) {
+                System.out.print("\n(enter 'q' to quit)\nEnter Account Number: ");
+                inputText = input.nextLine();
+
+                //If user enters "Q" or "q", stop the program
+                if (inputText.toLowerCase().equals("q")) {
+                    input.close();
+                    return;
+                }
+                //If the user does not enter a number, ask again
+                try { accountNum = Integer.parseInt(inputText); }
+                catch (NumberFormatException e) { continue; }
+                account = GetAccount(accountNum);
+            }
+            //Print date
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+            System.out.println("\n"+dtf.format(LocalDateTime.now()));
+            //Print account
+            System.out.println(account + "\n");
+        }
     }
 
 
@@ -83,6 +109,9 @@ public final class StockMain {
     }
 
 
+    /**
+     * Initializes the JSON list of data
+     */
     public static void InitializeList() {
         try {
             jsonArray = (JSONArray) parser.parse(new FileReader("stock_transations-3.by.account.holder.json"));

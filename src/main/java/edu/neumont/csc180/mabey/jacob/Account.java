@@ -6,8 +6,8 @@ public class Account {
     private int accountNum;
     private String firstname, lastname;
     private String ssn, email, phoneNum;
-    private double cash;
-    private int stockHoldings;
+    private double cash; // account balance
+    private int stockHoldings; // amount of owned shares
 
     private ArrayList<Transaction> transactions;
 
@@ -49,6 +49,11 @@ public class Account {
     public ArrayList<Transaction> GetTransactions() { return transactions; }
     public int GetTransactionsCount() { return transactions.size(); }
 
+
+    /**
+     * Adds a transaction object to the list of account transactions
+     * @param transaction
+     */
     public void AddTransaction(Transaction transaction) {
         transactions.add(transaction);
         switch(transaction.GetType()) {
