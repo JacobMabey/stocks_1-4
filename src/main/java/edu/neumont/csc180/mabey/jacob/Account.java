@@ -47,4 +47,17 @@ public class Account {
     public void AddTransaction(Transaction transaction) {
         transactions.add(transaction);
     }
+
+    @Override
+    public String toString() {
+        String result = "";
+        result += "Acount #: " + accountNum + "\n";
+        result += GetFullName() + "\t" + ssn + "\t" + email + "\t" + phoneNum + "\n";
+        for (Transaction t : transactions) {
+            result += t + "\n";
+        }
+        result += cash;
+
+        return result;
+    }
 }

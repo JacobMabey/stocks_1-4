@@ -20,14 +20,16 @@ public final class StockMain {
     public static void main(String[] args) {
         InitializeList();
 
-        System.out.println(GetJSONValue(300, "account_number"));
+        System.out.println(GetAccount(1));
     }
+
 
     public static Account GetAccount(int accountNum) {
         if (accountNum < 1 || accountNum > jsonArray.size()) {
             System.out.println("account number does not exist");
             return null;
         }
+        //Add all acount info
         int account_number = Integer.parseInt(GetJSONValue(accountNum, "account_number"));
         String first_name = GetJSONValue(accountNum, "first_name");
         String last_name = GetJSONValue(accountNum, "last_name");
@@ -36,7 +38,21 @@ public final class StockMain {
         String phoneNum = GetJSONValue(accountNum, "phone");
         String cash = GetJSONValue(accountNum, "beginning_balance");
 
-        return new Account(account_number, first_name, last_name, ssn, email, phoneNum, cash);
+        //Define the account
+        Account account = new Account(account_number, first_name, last_name, ssn, email, phoneNum, cash);
+
+        //Add all transactions
+        JSONArray transactionsList = (JSONArray)((JSONObject)jsonArray.get(accountNum - 1)).get("stock_trades");
+        for (Object transaction : transactionsList) {
+            String type = ((JSONObject)transaction).get("type").toString();
+            String symbol = ((JSONObject)transaction).get("stock_symbol").toString();
+            String sharePrice = ((JSONObject)transaction).get("price_per_share").toString();
+            int shareCount = Integer.parseInt(((JSONObject)transaction).get("count_shares").toString());
+
+            Transaction t = new Transaction(type, symbol, sharePrice, shareCount);
+            account.AddTransaction(t);
+        }
+        return account;
     }
 
 
