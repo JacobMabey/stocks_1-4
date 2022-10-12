@@ -12,6 +12,7 @@ public class Account {
         this.ssn = ssn;
         this.email = email;
         this.phoneNum = phoneNum;
+        
     }
     
 }
