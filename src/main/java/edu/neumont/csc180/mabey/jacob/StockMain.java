@@ -27,6 +27,7 @@ public final class StockMain {
         String inputText = "";
         Account account = null;
         int accountNum;
+        
         while (true) {
             account = null;
             while (account == null) {
