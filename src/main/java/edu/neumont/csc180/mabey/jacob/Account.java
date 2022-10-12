@@ -33,4 +33,18 @@ public class Account {
         transactions = new ArrayList<Transaction>();
     }
     
+    public int GetAccountNumber() { return accountNum; }
+    public String GetFirstName() { return firstname; }
+    public String GetLastName() { return lastname; }
+    public String GetFullName() { return firstname+" "+lastname; }
+    public String GetSSN() { return ssn; }
+    public String GetEmailAddress() { return email; }
+    public String GetPhoneNumber() { return phoneNum; }
+    public String GetBalance() { return cash; }
+
+    public ArrayList<Transaction> GetTransactions() { return transactions; }
+
+    public void AddTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    }
 }

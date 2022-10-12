@@ -11,4 +11,9 @@ public class Transaction {
         this.sharePrice = sharePrice;
         this.shareCount = shareCount;
     }
+
+    public String GetType() { return type; }
+    public String GetSymbol() { return stockSymbol; }
+    public String GetSharePrice() { return sharePrice; }
+    public String GetAmountOfShares() { return shareCount; }
 }
