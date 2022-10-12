@@ -44,8 +44,10 @@ public class Account {
     public String GetEmailAddress() { return email; }
     public String GetPhoneNumber() { return phoneNum; }
     public double GetBalance() { return cash; }
+    public int GetShareCount() { return stockHoldings; }
 
     public ArrayList<Transaction> GetTransactions() { return transactions; }
+    public int GetTransactionsCount() { return transactions.size(); }
 
     public void AddTransaction(Transaction transaction) {
         transactions.add(transaction);

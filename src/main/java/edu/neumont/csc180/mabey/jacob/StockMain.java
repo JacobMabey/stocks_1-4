@@ -21,8 +21,8 @@ public final class StockMain {
         InitializeList();
 
         System.out.println(GetAccount(1));
-        System.out.println(GetAccount(45));
-        System.out.println(GetAccount(256));
+        System.out.println(GetAccount(196));
+        System.out.println(GetAccount(255));
     }
 
 
@@ -55,7 +55,7 @@ public final class StockMain {
         for (Object transaction : transactionsList) {
             String type = ((JSONObject)transaction).get("type").toString();
             String symbol = ((JSONObject)transaction).get("stock_symbol").toString();
-            String sharePrice = ((JSONObject)transaction).get("price_per_share").toString();
+            double sharePrice = Double.parseDouble(((JSONObject)transaction).get("price_per_share").toString().substring(1));
             int shareCount = Integer.parseInt(((JSONObject)transaction).get("count_shares").toString());
 
             Transaction t = new Transaction(type, symbol, sharePrice, shareCount);
@@ -83,7 +83,7 @@ public final class StockMain {
     }
 
 
-    private static void InitializeList() {
+    public static void InitializeList() {
         try {
             jsonArray = (JSONArray) parser.parse(new FileReader("stock_transations-3.by.account.holder.json"));
         } catch (FileNotFoundException e) {
