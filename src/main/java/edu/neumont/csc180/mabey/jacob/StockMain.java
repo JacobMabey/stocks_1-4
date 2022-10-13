@@ -1,11 +1,15 @@
 package edu.neumont.csc180.mabey.jacob;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
@@ -23,7 +27,10 @@ public final class StockMain {
     public static void main(String[] args) {
         InitializeList();
 
-        Scanner input = new Scanner(System.in);
+        Account account = GetAccount(42);
+        WriteToHTML(account);
+        System.out.println(account);
+        /*Scanner input = new Scanner(System.in);
         String inputText = "";
         Account account = null;
         int accountNum;
@@ -49,7 +56,7 @@ public final class StockMain {
             System.out.println("\n"+dtf.format(LocalDateTime.now()));
             //Print account
             System.out.println(account + "\n");
-        }
+        }*/
     }
 
 
@@ -90,6 +97,54 @@ public final class StockMain {
         }
         return account;
     }
+
+
+    /**
+     * Writes an accounts info and transactions onto an html file
+     * @param account
+     */
+    public static void WriteToHTML(Account account) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        String date = dtf.format(LocalDateTime.now());
+        
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("template.html"));
+
+            //Write title, date, account info
+            bw.write("<html>");
+            bw.write("<head><title>"+account.GetFullName()+"</title></head>");
+            bw.write("<body>");
+            bw.write("<h4>"+date+"</h4>");
+            bw.write("<h2>Account #:&#9;"+account.GetAccountNumber()+"</h2>");
+            bw.write("<h2>"+account.GetFullName()+"&#9;&#9;&#9;"+account.GetSSN()+"&#9;&#9;&#9;"+account.GetEmailAddress()+"&#9;&#9;&#9;"+account.GetPhoneNumber()+"</h2>");
+            
+            //Write transactions
+            bw.write("<table>");
+            bw.write("<tr><th>Type</th><th>Symbol</th><th>Price</th><th>Shares</th><th>Total</th></tr>");
+            for (Transaction transaction : account.GetTransactions()) {
+                bw.write("<tr>");
+                bw.write("<td>"+transaction.GetType()+"</td>");
+                bw.write("<td>"+transaction.GetSymbol()+"</td>");
+                bw.write("<td>"+transaction.GetSharePrice()+"</td>");
+                bw.write("<td>"+transaction.GetAmountOfShares()+"</td>");
+                bw.write("<td>"+transaction.GetTotal()+"</td>");
+                bw.write("</tr>");
+            }
+            bw.write("</table>");
+
+            //Write balance and share count
+            
+
+            //close html body
+            bw.write("</body>");
+            bw.write("</html>");
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("template.html file could not be found.");
+        }
+    }
+
 
 
     /**
