@@ -1,15 +1,10 @@
 package edu.neumont.csc180.mabey.jacob;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.text.NumberFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
+import java.util.Locale;
 
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
@@ -30,33 +25,6 @@ public final class StockMain {
         Account account = GetAccount(42);
         WriteToHTML(account);
         System.out.println(account);
-        /*Scanner input = new Scanner(System.in);
-        String inputText = "";
-        Account account = null;
-        int accountNum;
-        
-        while (true) {
-            account = null;
-            while (account == null) {
-                System.out.print("\n(enter 'q' to quit)\nEnter Account Number: ");
-                inputText = input.nextLine();
-
-                //If user enters "Q" or "q", stop the program
-                if (inputText.toLowerCase().equals("q")) {
-                    input.close();
-                    return;
-                }
-                //If the user does not enter a number, ask again
-                try { accountNum = Integer.parseInt(inputText); }
-                catch (NumberFormatException e) { continue; }
-                account = GetAccount(accountNum);
-            }
-            //Print date
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-            System.out.println("\n"+dtf.format(LocalDateTime.now()));
-            //Print account
-            System.out.println(account + "\n");
-        }*/
     }
 
 
@@ -106,17 +74,19 @@ public final class StockMain {
     public static void WriteToHTML(Account account) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
         String date = dtf.format(LocalDateTime.now());
+        String filename = account.GetAccountNumber() + "-" + account.GetFirstName() + "_" + account.GetLastName() + ".html";
+        NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
         
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("template.html"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("accountStatements/"+filename));
 
             //Write title, date, account info
             bw.write("<html>");
-            bw.write("<head><title>"+account.GetFullName()+"</title></head>");
+            bw.write("<head><title>"+account.GetFullName()+"</title><link rel='stylesheet' href='styles.css'></head>");
             bw.write("<body>");
             bw.write("<h4>"+date+"</h4>");
-            bw.write("<h2>Account #:&#9;"+account.GetAccountNumber()+"</h2>");
-            bw.write("<h2>"+account.GetFullName()+"&#9;&#9;&#9;"+account.GetSSN()+"&#9;&#9;&#9;"+account.GetEmailAddress()+"&#9;&#9;&#9;"+account.GetPhoneNumber()+"</h2>");
+            bw.write("<h3>Account #:&emsp;"+account.GetAccountNumber()+"</h3>");
+            bw.write("<h3>"+account.GetFullName()+"&emsp;&emsp;"+account.GetSSN()+"&emsp;&emsp;"+account.GetEmailAddress()+"&emsp;&emsp;"+account.GetPhoneNumber()+"</h3>");
             
             //Write transactions
             bw.write("<table>");
@@ -125,15 +95,15 @@ public final class StockMain {
                 bw.write("<tr>");
                 bw.write("<td>"+transaction.GetType()+"</td>");
                 bw.write("<td>"+transaction.GetSymbol()+"</td>");
-                bw.write("<td>"+transaction.GetSharePrice()+"</td>");
+                bw.write("<td>"+dollarFormat.format(transaction.GetSharePrice())+"</td>");
                 bw.write("<td>"+transaction.GetAmountOfShares()+"</td>");
-                bw.write("<td>"+transaction.GetTotal()+"</td>");
+                bw.write("<td>"+dollarFormat.format(transaction.GetTotal())+"</td>");
                 bw.write("</tr>");
             }
             bw.write("</table>");
 
             //Write balance and share count
-            
+            bw.write("<h3>"+dollarFormat.format(account.GetBalance())+"&emsp;&emsp;&emsp;&emsp;Owned Shares: "+account.GetShareCount()+"</h3>");
 
             //close html body
             bw.write("</body>");
@@ -141,7 +111,7 @@ public final class StockMain {
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("template.html file could not be found.");
+            System.out.println(".html file could not be found.");
         }
     }
 

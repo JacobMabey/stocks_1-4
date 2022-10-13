@@ -1,0 +1,13 @@
+html {
+    background-color: aliceblue;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+table {
+    background-color: rgba(212, 234, 254, 0.771);
+    border-radius: 10px;
+}
+th {
+    text-align: center;
+    color: rgb(72, 72, 233);
+    width: 90px;
+}
