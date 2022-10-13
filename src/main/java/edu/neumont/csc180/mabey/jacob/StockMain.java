@@ -10,9 +10,6 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/**
- * Hello world!
- */
 public final class StockMain {
     private static JSONParser parser = new JSONParser();
     private static JSONArray jsonArray;
