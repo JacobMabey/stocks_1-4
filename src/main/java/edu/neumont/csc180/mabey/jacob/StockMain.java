@@ -73,11 +73,10 @@ public final class StockMain {
     public static void WriteToHTML(Account account) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
         String date = dtf.format(LocalDateTime.now());
-        String filename = account.GetAccountNumber() + "-" + account.GetFirstName() + "_" + account.GetLastName() + ".html";
         NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
         
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("accountStatements/"+filename));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("accountStatements/"+account.GetHtmlFileName()));
 
             //Write title, date, account info
             bw.write("<html>");
@@ -151,4 +150,11 @@ public final class StockMain {
             System.out.println("The file could not be parsed correctly");
         }
     }
+
+    /**
+     * Gets the size of the array of json accounts
+     * @return
+     */
+    public static int GetJSONArraySize() { return jsonArray.size(); }
 }
+

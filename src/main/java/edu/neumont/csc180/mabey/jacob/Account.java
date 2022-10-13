@@ -49,6 +49,7 @@ public class Account {
     public ArrayList<Transaction> GetTransactions() { return transactions; }
     public int GetTransactionsCount() { return transactions.size(); }
 
+    public String GetHtmlFileName() { return GetAccountNumber() + "-" + GetFirstName() + "_" + GetLastName() + ".html"; }
 
     /**
      * Adds a transaction object to the list of account transactions

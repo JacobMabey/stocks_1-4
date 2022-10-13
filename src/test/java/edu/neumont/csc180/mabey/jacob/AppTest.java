@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+
 
 class AppTest {
     @Test
@@ -29,5 +31,19 @@ class AppTest {
         assertEquals(19, account.GetTransactionsCount());
         assertEquals(9138103.12, account.GetBalance());
         assertEquals(6994, account.GetShareCount());
+    }
+
+
+    @Test
+    void testHtmlFilesExist() {
+        StockMain.InitializeList();
+
+        //Write ALL accounts to there own html files
+        for (int i = 1; i <= StockMain.GetJSONArraySize(); i++) {
+            Account account = StockMain.GetAccount(i);
+            StockMain.WriteToHTML(account);
+
+            assertTrue(new File("accountStatements/"+account.GetHtmlFileName()).exists());
+        }
     }
 }
