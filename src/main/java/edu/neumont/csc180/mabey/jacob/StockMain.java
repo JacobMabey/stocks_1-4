@@ -21,10 +21,12 @@ public final class StockMain {
     }
     public static void main(String[] args) {
         InitializeList();
-
-        Account account = GetAccount(42);
-        WriteToHTML(account);
-        System.out.println(account);
+        
+        //Write ALL accounts to there own html files
+        for (int i = 1; i <= jsonArray.size(); i++) {
+            Account account = GetAccount(i);
+            WriteToHTML(account);
+        }
     }
 
 

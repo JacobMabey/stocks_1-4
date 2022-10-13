@@ -5,6 +5,7 @@ html {
 table {
     background-color: rgba(212, 234, 254, 0.771);
     border-radius: 10px;
+    padding: 5px 20px;
 }
 th {
     text-align: center;
