@@ -7,20 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 
 
-class AppTest {
-    @Test
-    void testAccountAddTransaction() {
-        Account account = new Account(73, "Jacob", "Mabey", "xxx-xx-xxxx", "test@testing.com", "123-456-7890", 457.32);
-        account.AddTransaction(new Transaction("Buy", "WXYZ", 32.58, 3));
-        account.AddTransaction(new Transaction("Buy", "ABC", 23.14, 6));
-        account.AddTransaction(new Transaction("Sell", "THC", 362.12, 2));
-        
-        //457.32 - 32.58*3 - 23.14*6 + 362.12*2 = (944.98)
-        assertEquals(944.98, account.GetBalance());
-        //0 + 3 + 6 - 2 = (7)
-        assertEquals(7, account.GetShareCount());
-    }
-
+class StockMainTest {
 
     @Test
     void testGetAccount() {
@@ -31,6 +18,10 @@ class AppTest {
         assertEquals(19, account.GetTransactionsCount());
         assertEquals(9138103.12, account.GetBalance());
         assertEquals(6994, account.GetShareCount());
+
+        //Test out of bounds search
+        Account account2 = StockMain.GetAccount(352);
+        assertNull(account2);
     }
 
 
